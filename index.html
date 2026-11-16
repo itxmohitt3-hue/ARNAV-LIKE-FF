@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARNAV LIKE FF</title>
+<style>
+:root{--bg:#090d18;--card:#121a2b;--line:#26344d;--gold:#ffb52e;--text:#f4f7ff;--muted:#9eabc2;--green:#28d17c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#243451 0,#090d18 48%);font-family:Arial,sans-serif;color:var(--text)}
+header{padding:22px 16px;text-align:center;border-bottom:1px solid var(--line);background:#0b1120}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px;color:var(--gold)}.tag{color:var(--muted);font-size:12px;margin-top:6px}
+main{max-width:850px;margin:auto;padding:22px 14px 50px}.hero{text-align:center;padding:22px 10px}.hero h1{font-size:28px;margin:0 0 8px}.hero p{color:var(--muted);margin:0}
+.notice{background:#17243a;border:1px solid #2c4262;padding:12px;border-radius:12px;color:#c8d7ef;font-size:13px;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.plan{background:linear-gradient(160deg,#18243a,#101726);border:1px solid var(--line);border-radius:15px;padding:16px;text-align:center}
+.plan h3{margin:0 0 10px;font-size:16px}.likes{font-size:21px;font-weight:800;color:var(--gold)}.price{font-size:18px;font-weight:800;margin:8px 0 13px}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--gold);color:#17120a;font-weight:800;width:100%;cursor:pointer}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:18px}
+label{display:block;font-size:13px;color:#c6d1e3;margin:12px 0 6px}input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #34445e;background:#0b1220;color:white;font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hidden{display:none}
+.qrbox{border:1px dashed #536783;border-radius:12px;padding:20px;text-align:center;color:var(--muted);margin:14px 0}.qrbox strong{display:block;color:var(--gold);margin-bottom:7px}
+.small{font-size:12px;color:var(--muted);line-height:1.5}.status{color:var(--green);font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:430px){.row{grid-template-columns:1fr}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header><div class="logo">⚡ ARNAV LIKE FF</div><div class="tag">FREE FIRE LIKES SERVICE</div></header>
+<main>
+<section class="hero"><h1>Boost Your Free Fire Profile</h1><p>Choose a package and submit your order details.</p></section>
+<div class="notice">⚠️ Orders are processed only after payment is manually verified. Never share your game password or OTP.</div>
+<h2>Choose Your Package</h2>
+<section class="grid" id="plans"></section>
+<section class="panel hidden" id="orderPanel">
+<h2>Place Your Order</h2>
+<div class="row"><div><label>Free Fire UID</label><input id="uid" inputmode="numeric" placeholder="Enter player UID"></div><div><label>Region</label><select id="region"><option value="">Select region</option><option>India</option><option>Other</option></select></div></div>
+<label>Selected package</label><input id="chosen" readonly>
+<label>Customer Telegram username (optional)</label><input id="telegram" placeholder="@username">
+<button style="margin-top:14px" onclick="showPayment()">Continue to Payment</button>
+</section>
+<section class="panel hidden" id="paymentPanel">
+<h2>Payment</h2><p id="paySummary"></p>
+<div class="qrbox"><strong>UPI QR CODE</strong>QR image will be added after the original payment QR is verified.<br><span class="small">Do not pay to an unverified QR code.</span></div>
+<label>12-digit UTR / Transaction Reference</label><input id="utr" inputmode="numeric" maxlength="22" placeholder="Enter UTR after payment">
+<button style="margin-top:14px" onclick="submitOrder()">Submit Order</button>
+<p class="small">Submitting a UTR does not confirm payment. The admin must verify the transaction against the bank/UPI statement.</p>
+</section>
+<section class="panel hidden" id="done"><h2>Order submitted</h2><p class="status">Your order is marked as pending verification.</p><p id="orderRef" class="small"></p></section>
+<footer>ARNAV LIKE FF · Unofficial fan service. Not affiliated with Garena.</footer>
+</main>
+<script>
+const packages=[["Instant Likes","200–220","₹10"],["7 Days Likes","1,540","₹40"],["15 Days Likes","3,300","₹70"],["30 Days Likes","6,600","₹135"],["60 Days Likes","13,200","₹280"],["90 Days Likes","19,800","₹400"]];
+let selected=null;
+document.getElementById('plans').innerHTML=packages.map((p,i)=>`<article class="plan"><h3>${p[0]}</h3><div class="likes">${p[1]}</div><div class="small">Likes</div><div class="price">${p[2]}</div><button onclick="choose(${i})">Buy Now</button></article>`).join('');
+function choose(i){selected=packages[i];document.getElementById('chosen').value=selected[0]+' · '+selected[1]+' likes · '+selected[2];document.getElementById('orderPanel').classList.remove('hidden');document.getElementById('paymentPanel').classList.add('hidden');document.getElementById('done').classList.add('hidden');document.getElementById('orderPanel').scrollIntoView({behavior:'smooth'});}
+function showPayment(){if(!/^\d{6,20}$/.test(document.getElementById('uid').value.trim()))return alert('Please enter a valid UID (6–20 digits).');if(!document.getElementById('region').value)return alert('Please select your region.');document.getElementById('paySummary').textContent='Package: '+selected[0]+' | Amount: '+selected[2];document.getElementById('paymentPanel').classList.remove('hidden');document.getElementById('paymentPanel').scrollIntoView({behavior:'smooth'});}
+function submitOrder(){const utr=document.getElementById('utr').value.trim();if(utr.length<8)return alert('Please enter the transaction reference / UTR.');const order={ref:'ALFF-'+Date.now().toString().slice(-8),uid:document.getElementById('uid').value,region:document.getElementById('region').value,package:selected[0],amount:selected[2],utr,telegram:document.getElementById('telegram').value,status:'Pending verification',created:new Date().toISOString()};let orders=JSON.parse(localStorage.getItem('arnavOrders')||'[]');orders.push(order);localStorage.setItem('arnavOrders',JSON.stringify(orders));document.getElementById('orderRef').textContent='Order reference: '+order.ref+' · This demo stores orders only in this browser. A secure database and admin login must be connected before accepting real payments.';document.getElementById('done').classList.remove('hidden');document.getElementById('done').scrollIntoView({behavior:'smooth'});}
+</script>
+</body></html>
